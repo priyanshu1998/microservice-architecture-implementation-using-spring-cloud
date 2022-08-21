@@ -23,7 +23,6 @@ public class CustomerService{
         // todo : check if email valid
         // todo : check if email not taken
         customerRepository.saveAndFlush(customer);
-        // todo : check if fraudster
         FraudCheckResponse fraudCheckResponse = fraudClient.isFraudster(customer.getId());
 
         if (fraudCheckResponse.isFraudster()){
@@ -34,5 +33,6 @@ public class CustomerService{
 //        customerRepository.save(customer);
 
         // todo : send notification
+
     }
 }

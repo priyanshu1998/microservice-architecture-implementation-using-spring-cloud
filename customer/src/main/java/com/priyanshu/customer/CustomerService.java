@@ -2,15 +2,16 @@ package com.priyanshu.customer;
 
 import com.priyanshu.clients.fraud.FraudCheckResponse;
 import com.priyanshu.clients.fraud.FraudClient;
+import com.priyanshu.clients.notification.NotificationClient;
+import com.priyanshu.clients.notification.NotificationRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 @AllArgsConstructor
 public class CustomerService{
     private final CustomerRepository customerRepository;
-    private final RestTemplate restTemplate;
+    private final NotificationClient notificationClient;
     private final FraudClient fraudClient;
 
     public void registerCustomer(CustomerRegistrationRequest request) {
@@ -30,9 +31,16 @@ public class CustomerService{
         }
 
 
-//        customerRepository.save(customer);
 
-        // todo : send notification
+        notificationClient.sendNotification(
+                new NotificationRequest(
+                        customer.getId(),
+                        customer.getEmail(),
+                        String.format("Hi %s, this is a test notification",
+                                customer.getFirstName())
+                )
+        );
+
 
     }
 }
